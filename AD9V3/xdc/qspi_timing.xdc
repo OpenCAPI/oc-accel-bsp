@@ -35,7 +35,7 @@ set_min_delay 0.1 -from [get_clocks clock_afu] -to [get_pins -hier *USRCCLKO]
 # Following constraint should be commented when STARTUP block is disabled
 
 # create_generated_clock -name clk_sck -source [get_pins -hierarchical *axi_quad_spi_0/ext_spi_clk] [get_pins -hierarchical *USRCCLKO] -edges {3 5 7} -edge_shift [list $cclk_delay $cclk_delay $cclk_delay]
-create_generated_clock -name clk_sck -source [get_pins bsp/FLASH/QSPI/ext_spi_clk] [get_pins -hierarchical *USRCCLKO] -edges {3 5 7} -edge_shift [list $cclk_delay $cclk_delay $cclk_delay]
+create_generated_clock -name clk_sck -source [get_pins top_i/flash_vpd_wrapper_0/inst/FLASH/QSPI/ext_spi_clk] [get_pins -hierarchical *USRCCLKO] -edges {3 5 7} -edge_shift [list $cclk_delay $cclk_delay $cclk_delay]
 
 # Enable following constraint when STARTUP block is disabled
 #create_generated_clock -name clk_virt -source [get_pins -hierarchical

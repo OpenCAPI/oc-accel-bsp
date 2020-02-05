@@ -37,7 +37,6 @@ module flash_vpd_wrapper (
 
 
   , input            icap_clk
-  , input            iprog_go_or
 );
 
 //=============================================================================
@@ -84,33 +83,30 @@ module flash_vpd_wrapper (
 //          VPD
 //
 //=============================================================================
-  vpd_stub  vpd
-    (
-      // -- Miscellaneous Ports
-      .clock                                       ( clock_tlx ),                              // -- input
-      .reset                                       ( ~reset_afu_n ),                            // -- input
 
-      .cfg_vpd_rden                                ( cfg_vpd_rden ),                           // -- input
-      .cfg_vpd_wren                                ( cfg_vpd_wren ),                           // -- input
-      .cfg_vpd_addr                                ( cfg_vpd_addr[14:0] ),                     // -- input
-      .cfg_vpd_wdata                               ( cfg_vpd_wdata[31:0] ),                    // -- input
-
-      .vpd_cfg_done                                ( vpd_cfg_done ),                           // -- output
-      .vpd_cfg_rdata                               ( vpd_cfg_rdata[31:0] ),                    // -- output
-
-      // -- Error indicator
-      .vpd_err_unimplemented_addr                  ( vpd_err_unimplemented_addr )              // -- output
-
-    );
-
-//=============================================================================
+// Vivado IP Packager thought it is a DCP derived file and ignored it. 
+// Here ingore this module. 
+assign vpd_cfg_done = 1'b0;
+assign vpd_cfg_rdata = 32'b0;
+assign vpd_err_unimplemented_addr = 1'b0;
+//  vpd_stub  vpd
+//    (
+//      // -- Miscellaneous Ports
+//      .clock                                       ( clock_tlx ),                              // -- input
+//      .reset                                       ( ~reset_afu_n ),                            // -- input
 //
-//          ICAP for Image Reload
+//      .cfg_vpd_rden                                ( cfg_vpd_rden ),                           // -- input
+//      .cfg_vpd_wren                                ( cfg_vpd_wren ),                           // -- input
+//      .cfg_vpd_addr                                ( cfg_vpd_addr[14:0] ),                     // -- input
+//      .cfg_vpd_wdata                               ( cfg_vpd_wdata[31:0] ),                    // -- input
 //
-//=============================================================================
-    iprog_icap ICAP (
-        .go(iprog_go_or)
-        ,.clk(clock_156_25)
-    );
+//      .vpd_cfg_done                                ( vpd_cfg_done ),                           // -- output
+//      .vpd_cfg_rdata                               ( vpd_cfg_rdata[31:0] ),                    // -- output
+//
+//      // -- Error indicator
+//      .vpd_err_unimplemented_addr                  ( vpd_err_unimplemented_addr )              // -- output
+//
+//    );
+
 
 endmodule

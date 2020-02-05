@@ -24,14 +24,16 @@ set tcl_dir          $root_dir/oc-accel-bsp/$fpga_card/tcl
 set xdc_dir          $root_dir/oc-accel-bsp/$fpga_card/xdc
 
 set verilog_flash_vpd_wrapper [list \
+ $src_dir/cfg_reg_to_axi4lite.v    \
  $src_dir/flash_sub_system.v    \
- $src_dir/vpd_stub.v    \
- $src_dir/iprog_icap.vhdl  \
  $src_dir/flash_vpd_wrapper.v    \
 ]
 
-source $tcl_dir/tcl/create_axi_hwicap.tcl
-source $tcl_dir/tcl/create_axi_quad_spi.tcl
+# Ignore this: 
+# $src_dir/vpd_stub.v 
+#
+source $tcl_dir/create_axi_hwicap.tcl
+source $tcl_dir/create_axi_quad_spi.tcl
 
 ############################################################################
 #Add source files
@@ -42,8 +44,8 @@ set files [list {*}$verilog_flash_vpd_wrapper ]
 add_files -norecurse -fileset $obj $files
 
 set xdc_files [list \
-                       $xdc_dir/xdc/qspi_pinout.xdc  \
-                       $xdc_dir/xdc/qspi_timing.xdc  \
+                       $xdc_dir/qspi_pinout.xdc  \
+                       $xdc_dir/qspi_timing.xdc  \
                    ]
 set obj [get_filesets constrs_1]
 add_files -fileset constrs_1 -norecurse $xdc_files
