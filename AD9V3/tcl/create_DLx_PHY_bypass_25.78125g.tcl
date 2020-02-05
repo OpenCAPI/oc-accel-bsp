@@ -32,5 +32,5 @@ set_property -dict [list CONFIG.CHANNEL_ENABLE {X0Y7 X0Y6 X0Y5 X0Y4 X0Y3 X0Y2 X0
                          CONFIG.TXPROGDIV_FREQ_VAL {402.8320312} \
                          CONFIG.FREERUN_FREQUENCY {150} \
                          CONFIG.Component_Name {DLx_phy}] [get_ips DLx_phy]
-generate_target {all} [get_ips DLx_phy]
+#generate_target {all} [get_ips DLx_phy]
 
