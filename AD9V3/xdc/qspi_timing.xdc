@@ -26,8 +26,8 @@ set tclk_trace_delay_min 0.2
 # set_min_delay 0.1 -from [get_pins -hier *SCK_O_reg_reg/C] -to [get_pins -hier *USRCCLKO]
 # set_max_delay 1.5 -from [get_clocks tx_clk_201MHz] -to [get_pins -hier *USRCCLKO] -datapath_only
 # set_min_delay 0.1 -from [get_clocks tx_clk_201MHz] -to [get_pins -hier *USRCCLKO]
-set_max_delay 1.5 -from [get_clocks clock_afu] -to [get_pins -hier *USRCCLKO] -datapath_only
-set_min_delay 0.1 -from [get_clocks clock_afu] -to [get_pins -hier *USRCCLKO]
+set_max_delay 1.5 -from [get_clocks top_i/oc_host_if_clock_afu] -to [get_pins -hier *USRCCLKO] -datapath_only
+set_min_delay 0.1 -from [get_clocks top_i/oc_host_if_clock_afu] -to [get_pins -hier *USRCCLKO]
 
 # Following command creates a divide by 2 clock
 # It also takes into account the delay added by STARTUP block to route the CCLK
