@@ -19,6 +19,7 @@
 ############################################################################
 set fpga_card        $::env(FPGACARD)
 set root_dir         $::env(OCACCEL_HARDWARE_ROOT)
+set simulator      $::env(SIMULATOR)
 set src_dir          $root_dir/oc-accel-bsp/$fpga_card/hdl/flash_vpd_wrapper
 set tcl_dir          $root_dir/oc-accel-bsp/$fpga_card/tcl
 set xdc_dir          $root_dir/oc-accel-bsp/$fpga_card/xdc
@@ -43,15 +44,35 @@ set obj [get_filesets sources_1]
 set files [list {*}$verilog_flash_vpd_wrapper ]
 add_files -norecurse -fileset $obj $files
 
-#set xdc_files [list \
-#                       $xdc_dir/qspi_pinout.xdc  \
-#                       $xdc_dir/qspi_timing.xdc  \
-#                   ]
-#set obj [get_filesets constrs_1]
-#add_files -fileset constrs_1 -norecurse $xdc_files
+if { $simulator != "nosim" } {
+  puts "	        Simulation with $simulator enabled, adding $src_dir/sim_only/flash_vpd_wrapper.sv"
+  add_files -norecurse -fileset sim_1 $src_dir/sim_only/flash_vpd_wrapper.sv
+}
+
+foreach f $verilog_flash_vpd_wrapper {
+  set_property used_in_simulation     false [get_files $f]
+}
+
+if { $simulator != "nosim" } {
+  set_property used_in_synthesis      false [get_files $src_dir/sim_only/flash_vpd_wrapper.sv]
+  set_property used_in_implementation false [get_files $src_dir/sim_only/flash_vpd_wrapper.sv]
+  set_property used_in_simulation     true  [get_files $src_dir/sim_only/flash_vpd_wrapper.sv]
+}
+
+set xdc_files [list \
+                       $xdc_dir/qspi_pinout.xdc  \
+                       $xdc_dir/qspi_timing.xdc  \
+                   ]
+set obj [get_filesets constrs_1]
+add_files -fileset constrs_1 -norecurse $xdc_files
 
 #set file "snap_global_vars.v"
 #set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 #set_property -name "file_type" -value "Verilog Header" -objects $file_obj
 
 
+set_property top flash_vpd_wrapper [get_filesets sources_1]
+set_property top flash_vpd_wrapper [get_filesets sim_1]
+
+update_compile_order -fileset sources_1
+update_compile_order -fileset sim_1
