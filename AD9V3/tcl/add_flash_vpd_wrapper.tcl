@@ -43,12 +43,12 @@ set obj [get_filesets sources_1]
 set files [list {*}$verilog_flash_vpd_wrapper ]
 add_files -norecurse -fileset $obj $files
 
-set xdc_files [list \
-                       $xdc_dir/qspi_pinout.xdc  \
-                       $xdc_dir/qspi_timing.xdc  \
-                   ]
-set obj [get_filesets constrs_1]
-add_files -fileset constrs_1 -norecurse $xdc_files
+#set xdc_files [list \
+#                       $xdc_dir/qspi_pinout.xdc  \
+#                       $xdc_dir/qspi_timing.xdc  \
+#                   ]
+#set obj [get_filesets constrs_1]
+#add_files -fileset constrs_1 -norecurse $xdc_files
 
 #set file "snap_global_vars.v"
 #set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]

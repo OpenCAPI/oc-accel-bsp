@@ -26,8 +26,8 @@ set tclk_trace_delay_min 0.2
 # set_min_delay 0.1 -from [get_pins -hier *SCK_O_reg_reg/C] -to [get_pins -hier *USRCCLKO]
 # set_max_delay 1.5 -from [get_clocks tx_clk_201MHz] -to [get_pins -hier *USRCCLKO] -datapath_only
 # set_min_delay 0.1 -from [get_clocks tx_clk_201MHz] -to [get_pins -hier *USRCCLKO]
-set_max_delay 1.5 -from [get_clocks top_i/oc_host_if_clock_afu] -to [get_pins -hier *USRCCLKO] -datapath_only
-set_min_delay 0.1 -from [get_clocks top_i/oc_host_if_clock_afu] -to [get_pins -hier *USRCCLKO]
+set_max_delay 1.5 -from [get_clocks oc_host_if_clock_afu] -to [get_pins -hier *USRCCLKO] -datapath_only
+set_min_delay 0.1 -from [get_clocks oc_host_if_clock_afu] -to [get_pins -hier *USRCCLKO]
 
 # Following command creates a divide by 2 clock
 # It also takes into account the delay added by STARTUP block to route the CCLK
@@ -35,7 +35,7 @@ set_min_delay 0.1 -from [get_clocks top_i/oc_host_if_clock_afu] -to [get_pins -h
 # Following constraint should be commented when STARTUP block is disabled
 
 # create_generated_clock -name clk_sck -source [get_pins -hierarchical *axi_quad_spi_0/ext_spi_clk] [get_pins -hierarchical *USRCCLKO] -edges {3 5 7} -edge_shift [list $cclk_delay $cclk_delay $cclk_delay]
-create_generated_clock -name clk_sck -source [get_pins top_i/flash_vpd_wrapper_0/inst/FLASH/QSPI/ext_spi_clk] [get_pins -hierarchical *USRCCLKO] -edges {3 5 7} -edge_shift [list $cclk_delay $cclk_delay $cclk_delay]
+create_generated_clock -name clk_sck -source [get_pins top_i/flash_vpd_wrapper/inst/FLASH/QSPI/ext_spi_clk] [get_pins -hierarchical *USRCCLKO] -edges {3 5 7} -edge_shift [list $cclk_delay $cclk_delay $cclk_delay]
 
 # Enable following constraint when STARTUP block is disabled
 #create_generated_clock -name clk_virt -source [get_pins -hierarchical
@@ -45,13 +45,13 @@ create_generated_clock -name clk_sck -source [get_pins top_i/flash_vpd_wrapper_0
 
 set_input_delay -clock clk_sck -max [expr $tco_max + $tdata_trace_delay_max + $tclk_trace_delay_max] [get_ports *FPGA_FLASH*] -clock_fall;
 set_input_delay -clock clk_sck -min [expr $tco_min + $tdata_trace_delay_min + $tclk_trace_delay_min] [get_ports *FPGA_FLASH*] -clock_fall;
-set_multicycle_path 2 -setup     -from clk_sck -to [get_clocks -of_objects [get_pins -hierarchical */ext_spi_clk]]
-set_multicycle_path 1 -hold -end -from clk_sck -to [get_clocks -of_objects [get_pins -hierarchical */ext_spi_clk]]
+set_multicycle_path 2 -setup     -from clk_sck -to [get_clocks -of_objects [get_pins top_i/flash_vpd_wrapper/inst/FLASH/QSPI/ext_spi_clk]]
+set_multicycle_path 1 -hold -end -from clk_sck -to [get_clocks -of_objects [get_pins top_i/flash_vpd_wrapper/inst/FLASH/QSPI/ext_spi_clk]]
 
 # Data is captured into SPI on the following rising edge of SCK
 # Data is driven by the IP on alternate rising_edge of the ext_spi_clk
 
 set_output_delay -clock clk_sck -max [expr $tsu + $tdata_trace_delay_max - $tclk_trace_delay_min] [get_ports *FPGA_FLASH*];
 set_output_delay -clock clk_sck -min [expr $tdata_trace_delay_min -$th - $tclk_trace_delay_max]   [get_ports *FPGA_FLASH*];
-set_multicycle_path 2 -setup -start -from [get_clocks -of_objects [get_pins -hierarchical */ext_spi_clk]] -to clk_sck
-set_multicycle_path 1 -hold -from [get_clocks -of_objects [get_pins -hierarchical */ext_spi_clk]] -to clk_sck
+set_multicycle_path 2 -setup -start -from [get_clocks -of_objects [get_pins top_i/flash_vpd_wrapper/inst/FLASH/QSPI/ext_spi_clk]] -to clk_sck
+set_multicycle_path 1 -hold -from [get_clocks -of_objects [get_pins top_i/flash_vpd_wrapper/inst/FLASH/QSPI/ext_spi_clk]] -to clk_sck
