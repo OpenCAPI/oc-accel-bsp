@@ -3,6 +3,7 @@
 
 module flash_vpd_wrapper (
     input            clock_afu
+   ,input            clock_tlx
    ,input            reset_afu_n
    ,inout            FPGA_FLASH_CE2_L       // To/From FLASH of flash_sub_system.v
    ,inout            FPGA_FLASH_DQ4         // To/From FLASH of flash_sub_system.v
