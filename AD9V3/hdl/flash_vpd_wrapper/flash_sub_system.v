@@ -284,15 +284,6 @@ axi_hwicap_0 ICAP (
   , .s_axi_rvalid   ( g_axi_rvalid[1]    ) // output
   , .s_axi_rready   ( s_axi_rready       ) // input
   , .ip2intc_irpt   ( icap_interrupt     ) // output
-  , .icap_avail     (1'b0)
-  , .icap_csib      ()
-  , .icap_o         ()
-  , .icap_i         (32'b0)
-  , .icap_rdwrb     ()
-  , .cap_gnt        (1'b0)
-  , .cap_rel        (1'b0)
-  , .cap_req        ()
-
 );
 
    
