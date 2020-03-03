@@ -4,7 +4,7 @@
 module flash_vpd_wrapper (
     input            clock_afu
    ,input            clock_tlx
-   ,input            refclk300
+   ,input            clock_board_ref
    ,input            reset_afu_n
    ,inout            FPGA_FLASH_CE2_L       // To/From FLASH of flash_sub_system.v
    ,inout            FPGA_FLASH_DQ4         // To/From FLASH of flash_sub_system.v
@@ -47,9 +47,9 @@ module flash_vpd_wrapper (
 //
 //=============================================================================
   wire spi_clk;  
-  // 150Mhz
-  BUFGCE_DIV #(.BUFGCE_DIVIDE(2)) spi_clk_inst (
-      .O(spi_clk), .CE(1'b1), .CLR(1'b0), .I(refclk300)
+  // 100Mhz
+  BUFGCE_DIV #(.BUFGCE_DIVIDE(3)) spi_clk_inst (
+      .O(spi_clk), .CE(1'b1), .CLR(1'b0), .I(clock_board_ref)
   );
 
 
